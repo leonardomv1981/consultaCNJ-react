@@ -1,8 +1,8 @@
 import React from 'react'
 
-const ButtonModal = (props) => {
+const ButtonModal = ({ setModal, ...props }) => {
   return (
-    <button>{props.text}</button>
+    <button onClick={() => setModal(true)}>{props.text}</button>
   )
 }
 

@@ -52,3 +52,11 @@ textarea {
     background: #fff;
     transition: 0.2s;
 }
+
+.process-card {
+    border: 1px solid #ccc;
+    border-radius: var(--radius);
+    padding: 1rem;
+    margin-bottom: 1rem;
+    text-align: left;
+}
