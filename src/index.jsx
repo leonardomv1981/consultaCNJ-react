@@ -8,11 +8,3 @@ ReactDOM.createRoot(document.getElementById('root')).render(
     <App />
 </React.StrictMode>
 );
-
-// import AppC from './AppC';
-
-// ReactDOM.createRoot(document.getElementById('root')).render(
-// <React.StrictMode>
-//     <AppC />
-// </React.StrictMode>
-// );
