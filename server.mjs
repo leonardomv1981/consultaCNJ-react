@@ -8,7 +8,7 @@ const PORT = 3001;
 app.use(cors());
 app.use(express.json());
 
-app.post('/api/cnj', (req, res) => {
+app.post('/api/cnj', async (req, res) => {
     const processo = req.body.numero_processo;
 
     function getEndPointApi(processo) {
@@ -160,9 +160,18 @@ app.post('/api/cnj', (req, res) => {
             }
         };
 
-        const result = {};
-        result.nome = tribunais[j][tr] ? tribunais[j][tr].nome : 'Tribunal não encontrado';
-        result.endpoint = tribunais[j][tr] ? tribunais[j][tr].link : null;
+        const result = [];
+        result[0] = {
+            nome: tribunais[j][tr] ? tribunais[j][tr].nome : 'Tribunal não encontrado',
+            endpoint: tribunais[j][tr] ? tribunais[j][tr].link : null
+        };
+
+        if (tribunais[j][0]) {
+            result[1] = {
+                nome: tribunais[j][0].nome,
+                endpoint: tribunais[j][0].link
+            }
+        }
 
         return result;
 
@@ -186,15 +195,24 @@ app.post('/api/cnj', (req, res) => {
         })
     };
 
-    const result = fetch(apiInfo.endpoint, options)
-        .then(response => response.json())
-        .then(data => {
-            return res.json(data);
-        })
-        .catch(err => {
-            console.error('Erro ao consultar a API do tribunal:', err);
-            return res.status(500).json({ error: 'Erro ao consultar a API do tribunal' });
-        });
+    let result = [];
+    for (let i = 0; i < apiInfo.length; i++) {
+        if (apiInfo[i].endpoint) {
+            try {
+                const response = await fetch(apiInfo[i].endpoint, options);
+                const data = await response.json();
+                result.push({
+                    tribunal: apiInfo[i].nome,
+                    data: data
+                });
+            } catch (err) {
+                console.error(`Erro ao consultar a API do tribunal ${apiInfo[i].nome}:`, err);
+            }
+        }
+    }
+
+    return res.status(200).json(result);
+
 });
 
 

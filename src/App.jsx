@@ -3,6 +3,7 @@ import Modal from './Modal';
 import InputText from './Form/InputText';
 import Button from './Form/Button';
 import ButtonModal from './ButtonModal';
+import ProcessCard from './ProcessCard';
 
 
 const App = () => {
@@ -30,53 +31,22 @@ const App = () => {
                 "numero_processo": processo,
             })
         };
-
+        
         let data = await fetch('http://localhost:3001/api/cnj', options);
+        // console.log(data.json())
+
+
         data = await data.json();
+        console.log(data);
 
-        if (data.hits.total.value === 0) {
-            alert('Busca efetivada com sucesso, mas processo indisponível.');
-            setDadosProcesso([]); // Limpa os dados
-            return;
-        }
+        // if (data.hits.total.value === 0) {
+        //     alert('Busca efetivada com sucesso, mas processo indisponível.');
+        //     setDadosProcesso([]); // Limpa os dados
+        //     return;
+        // }
 
-        const resultado = data.hits.hits;
-        setDadosProcesso(resultado);
-    }
-
-    function ProcessCard({ processo, onOpenModal }) {
-        if (!processo || !processo._source) {
-            return <div>Dados do processo inválidos</div>;
-        }
-
-        return (
-            <div className="process-card" key={processo._id}>
-                <h3>Número do Processo: {processo._source.numeroProcesso} - {processo._source.tribunal}</h3>
-                <p><strong>Órgão Julgador:</strong> {processo._source.orgaoJulgador?.nome || 'Não informado'}</p>
-                <p><strong>Instância:</strong>
-                { processo._source.grau == 'G1' ? '1ª Instância' : 'Recursal' }
-                </p>
-                <p><strong>Data de distribuição:</strong> {processo._source.dataAjuizamento}</p>
-                <p><strong>Data da última atualização:</strong> 
-                {
-                    new Intl.DateTimeFormat('pt-BR', {
-                        dateStyle: 'short',
-                        timeStyle: 'short',
-                        timeZone: 'America/Sao_Paulo'
-                    }).format(new Date(processo._source.dataHoraUltimaAtualizacao))
-                }</p>
-                <p><strong>Classe Processual:</strong> {processo._source.classe.nome}</p>
-                <p><strong>Assunto:</strong> 
-                {processo._source.assuntos.map((assunto, index) => (
-                    <span key={index}>
-                        {assunto.nome}{index < processo._source.assuntos.length - 1 ? ', ' : ''}
-                    </span>
-                ))};
-                </p>
-                <p><strong>Tipo de processo: </strong> {processo._source.formato.nome} - {processo._source.sistema.nome}</p>
-                <ButtonModal onClick={onOpenModal} setModal={setModal} text="Ver movimentações" />
-            </div>
-        );
+        // const resultado = data;
+        setDadosProcesso(data);
     }
 
     function validateProcesso(processo) {
@@ -131,14 +101,16 @@ const App = () => {
             </form>
             <div id="results-container">
                 {dadosProcesso.length > 0 ? (
-                    dadosProcesso.map((processo) => (
-                        <ProcessCard 
-                            key={processo._id} 
-                            processo={processo} 
-                            onOpenModal={() => setModal(true)}
-                        />
-
-                    ))
+                    dadosProcesso.map((processo) =>
+                        processo.data.hits.hits.map((item) => (
+                            <ProcessCard
+                                key={item._id}
+                                processo={item}
+                                tribunal={processo.tribunal}
+                                setModal={setModal}
+                            />
+                        ))
+                    )
                 ) : (
                     <p>Nenhum dado para exibir.</p>
                 )}

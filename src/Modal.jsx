@@ -1,12 +1,10 @@
 import React from 'react'
 import ButtonModal from './ButtonModal'
 
-const Modal = ({ modal, onConfirm, textModal, textButton }) => {
+const Modal = ({ modal, setModal, data}) => {
     if (modal === true) {
         return (
             <div className="modal">
-                teste
-                <p>{props.textModal}</p>
                 {/* <ButtonModal onClick={() => setModal(false)} /> */}
             </div>
         )
