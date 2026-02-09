@@ -4,12 +4,13 @@ import InputText from './Form/InputText';
 import Button from './Form/Button';
 import ButtonModal from './ButtonModal';
 import ProcessCard from './ProcessCard';
+import ModalMovimentos from './ModalMovimentos';
 
 
 const App = () => {
     const [numeroProcesso, setNumeroProcesso] = React.useState('');
     const [dadosProcesso, setDadosProcesso] = React.useState([]);
-    const [modal, setModal] = React.useState(false);
+    const [movimentos, setMovimentos] = React.useState(null);
 
     async function handleSubmit(event) {
         event.preventDefault();
@@ -33,19 +34,9 @@ const App = () => {
         };
         
         let data = await fetch('http://localhost:3001/api/cnj', options);
-        // console.log(data.json())
-
 
         data = await data.json();
-        console.log(data);
 
-        // if (data.hits.total.value === 0) {
-        //     alert('Busca efetivada com sucesso, mas processo indisponível.');
-        //     setDadosProcesso([]); // Limpa os dados
-        //     return;
-        // }
-
-        // const resultado = data;
         setDadosProcesso(data);
     }
 
@@ -107,7 +98,7 @@ const App = () => {
                                 key={item._id}
                                 processo={item}
                                 tribunal={processo.tribunal}
-                                setModal={setModal}
+                                setMovimentos={setMovimentos}
                             />
                         ))
                     )
@@ -115,7 +106,9 @@ const App = () => {
                     <p>Nenhum dado para exibir.</p>
                 )}
             </div>
-            <Modal modal={modal} setModal={setModal}/>
+            {movimentos && (
+                <ModalMovimentos movimentos={movimentos} setClose={setMovimentos} key="moddsa" />
+            )}
         </div>
     );
 };

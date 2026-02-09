@@ -1,7 +1,11 @@
 import React from 'react'
 import Button from './Form/Button'
 
-function ProcessCard({processo, setModal}) {
+function ProcessCard({processo, setMovimentos}) {
+
+  const handleClickMovimentos = () => {
+    setMovimentos(processo._source.movimentos);
+  }
   return (
     <div className="process-card" key={processo._id}>
       <h3>Número do Processo: {processo._source.numeroProcesso} - {processo._source.tribunal}</h3>
@@ -27,7 +31,7 @@ function ProcessCard({processo, setModal}) {
       ))};
       </p>
       <p><strong>Tipo de processo: </strong> {processo._source.formato.nome} - {processo._source.sistema.nome}</p>
-      <Button texto="Ver movimentações" />
+      <Button texto="Ver movimentações" onClick={handleClickMovimentos}/>
     </div>
   )
 }

@@ -60,3 +60,47 @@ textarea {
     margin-bottom: 1rem;
     text-align: left;
 }
+
+.modal-movimentos {
+    position: relative;
+    width: 100vw;
+    height: 80vh;
+    background: #fff;
+    overflow: auto;
+    border-radius: 8px;
+}
+
+.modal-title {
+    position: absolute;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    margin: 0;
+}
+
+.modal-overlay {
+    position: fixed;
+    inset: 0;
+    /* top, right, bottom, left = 0 */
+    background-color: rgba(255, 255, 255, 0.9);
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    z-index: 1000;
+}
+
+#close-modal {
+    position: absolute;
+    top: 12px;
+    right: 12px;
+
+    cursor: pointer;
+    font-size: 20px;
+    line-height: 1;
+
+    background: transparent;
+    border: none;
+}
