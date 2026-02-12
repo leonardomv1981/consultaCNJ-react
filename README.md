@@ -47,5 +47,9 @@ Recieve: Id, label, placeholder, label and props (other HTML configurations, lik
 Recieve: id, text (text that the button will show)
 
 ## how to use
-![alt text](image.png)
+1. Fill the process number (ex: 1013884-96.2025.8.13.0024)
+
+![screen with the text input for the process number](image.png)
+
+
 
