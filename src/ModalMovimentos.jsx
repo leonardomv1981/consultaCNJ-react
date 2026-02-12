@@ -4,7 +4,6 @@ const ModalMovimentos = ({movimentos, setClose}) => {
     const closeModal = () => {
         setClose('');
     }
-    console.log(movimentos)
     return (
         <div className="modal-overlay">
             <h1 className="modal-title">Movimentações</h1>
